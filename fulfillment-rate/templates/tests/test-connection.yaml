@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "fulfillment-rate.fullname" . }}-test-connection"
+  labels:
+    {{- include "fulfillment-rate.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "fulfillment-rate.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
